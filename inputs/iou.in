@@ -1,0 +1,136 @@
+// The program input for iou/src/main.leo
+[apply]
+info: LoanInfo = LoanInfo {
+    debtor: aleo1z5eut5f5x7r45c8ut3xmt5wrsxdkpjrtksn5pu3d9af3zsr8ju8sm64tkz,
+    debtor_name: 999u64,
+    debtor_address: 38535017702102u64,
+    debtor_signature: 123456789u64,
+    creditor: aleo1yzlta2q5h8t0fqe0v6dyh9mtv4aggd53fgzr068jvplqhvqsnvzq7pj2ke,
+    creditor_name: 666u64,
+    creditor_address: 55456013737404u64,
+    creditor_signature: 0u64,
+    amount: 12500u64,
+    currency: 1u64,
+    date: 1683861808u64,
+    repayment_deadline: 1715484208u64,
+    interest_rate: 12u64
+};
+
+[disburse]
+loan_application_record: Loan = Loan {
+    owner: aleo1yzlta2q5h8t0fqe0v6dyh9mtv4aggd53fgzr068jvplqhvqsnvzq7pj2ke,
+    gates: 0u64,
+    id: 4002334999435057716018293886734164192118302543847538865585644743278642038848field,
+    state: 1u8,
+    debtor: aleo1z5eut5f5x7r45c8ut3xmt5wrsxdkpjrtksn5pu3d9af3zsr8ju8sm64tkz,
+    debtor_name: 999u64,
+    debtor_address: 38535017702102u64,
+    debtor_signature: 123456789u64,
+    creditor: aleo1yzlta2q5h8t0fqe0v6dyh9mtv4aggd53fgzr068jvplqhvqsnvzq7pj2ke,
+    creditor_name: 666u64,
+    creditor_address: 55456013737404u64,
+    creditor_signature: 0u64,
+    amount: 12500u64,
+    currency: 1u64,
+    date: 1683861808u64,
+    repayment_deadline: 1715484208u64,
+    interest_rate: 12u64,
+    _nonce: 2956179692819716213383696093312873031176261443728375747229162710373492428966group
+};
+coins_from_creditor: Coins = Coins {
+    owner: aleo1yzlta2q5h8t0fqe0v6dyh9mtv4aggd53fgzr068jvplqhvqsnvzq7pj2ke,
+    gates: 0u64,
+    amount: 13000u64,
+    _nonce: 1408751564391991676111205468865352502799969781804462237997238363743317919418group
+};
+signature_from_creditor: u64 = 987654321u64;
+
+[repay]
+loan_application_record: Loan = Loan {
+    owner: aleo1z5eut5f5x7r45c8ut3xmt5wrsxdkpjrtksn5pu3d9af3zsr8ju8sm64tkz,
+    gates: 0u64,
+    id: 4002334999435057716018293886734164192118302543847538865585644743278642038848field,
+    state: 1u8,
+    debtor: aleo1z5eut5f5x7r45c8ut3xmt5wrsxdkpjrtksn5pu3d9af3zsr8ju8sm64tkz,
+    debtor_name: 999u64,
+    debtor_address: 38535017702102u64,
+    debtor_signature: 123456789u64,
+    creditor: aleo1yzlta2q5h8t0fqe0v6dyh9mtv4aggd53fgzr068jvplqhvqsnvzq7pj2ke,
+    creditor_name: 666u64,
+    creditor_address: 55456013737404u64,
+    creditor_signature: 0u64,
+    amount: 12500u64,
+    currency: 1u64,
+    date: 1683861808u64,
+    repayment_deadline: 1715484208u64,
+    interest_rate: 12u64,
+    _nonce: 7909259062320386970432579667034466641592064529197587800510674429986259331998group
+};
+loan_disbursement_record: Loan = Loan {
+    owner: aleo1z5eut5f5x7r45c8ut3xmt5wrsxdkpjrtksn5pu3d9af3zsr8ju8sm64tkz,
+    gates: 0u64,
+    id: 4002334999435057716018293886734164192118302543847538865585644743278642038848field,
+    state: 2u8,
+    debtor: aleo1z5eut5f5x7r45c8ut3xmt5wrsxdkpjrtksn5pu3d9af3zsr8ju8sm64tkz,
+    debtor_name: 999u64,
+    debtor_address: 38535017702102u64,
+    debtor_signature: 123456789u64,
+    creditor: aleo1yzlta2q5h8t0fqe0v6dyh9mtv4aggd53fgzr068jvplqhvqsnvzq7pj2ke,
+    creditor_name: 666u64,
+    creditor_address: 55456013737404u64,
+    creditor_signature: 987654321u64,
+    amount: 12500u64,
+    currency: 1u64,
+    date: 1683861808u64,
+    repayment_deadline: 1715484208u64,
+    interest_rate: 12u64,
+    _nonce: 2030938041474446805374247521447934333419664472168441461288652028470088389773group
+};
+coins_from_debtor: Coins = Coins {
+    owner: aleo1z5eut5f5x7r45c8ut3xmt5wrsxdkpjrtksn5pu3d9af3zsr8ju8sm64tkz,
+    gates: 0u64,
+    amount: 14000u64,
+    _nonce: 5832986963494980000993845346631141207930768180463816185997814213106379380846group
+};
+
+[settle]
+loan_disbursement_record: Loan = Loan {
+    owner: aleo1yzlta2q5h8t0fqe0v6dyh9mtv4aggd53fgzr068jvplqhvqsnvzq7pj2ke,
+    gates: 0u64,
+    id: 4002334999435057716018293886734164192118302543847538865585644743278642038848field,
+    state: 2u8,
+    debtor: aleo1z5eut5f5x7r45c8ut3xmt5wrsxdkpjrtksn5pu3d9af3zsr8ju8sm64tkz,
+    debtor_name: 999u64,
+    debtor_address: 38535017702102u64,
+    debtor_signature: 123456789u64,
+    creditor: aleo1yzlta2q5h8t0fqe0v6dyh9mtv4aggd53fgzr068jvplqhvqsnvzq7pj2ke,
+    creditor_name: 666u64,
+    creditor_address: 55456013737404u64,
+    creditor_signature: 987654321u64,
+    amount: 12500u64,
+    currency: 1u64,
+    date: 1683861808u64,
+    repayment_deadline: 1715484208u64,
+    interest_rate: 12u64,
+    _nonce: 5760668708786861562513946771182321629655515211445769453011151409494698241997group
+};
+loan_repayment_record: Loan = Loan {
+    owner: aleo1yzlta2q5h8t0fqe0v6dyh9mtv4aggd53fgzr068jvplqhvqsnvzq7pj2ke,
+    gates: 0u64,
+    id: 4002334999435057716018293886734164192118302543847538865585644743278642038848field,
+    state: 3u8,
+    debtor: aleo1z5eut5f5x7r45c8ut3xmt5wrsxdkpjrtksn5pu3d9af3zsr8ju8sm64tkz,
+    debtor_name: 999u64,
+    debtor_address: 38535017702102u64,
+    debtor_signature: 123456789u64,
+    creditor: aleo1yzlta2q5h8t0fqe0v6dyh9mtv4aggd53fgzr068jvplqhvqsnvzq7pj2ke,
+    creditor_name: 666u64,
+    creditor_address: 55456013737404u64,
+    creditor_signature: 987654321u64,
+    amount: 12500u64,
+    currency: 1u64,
+    date: 1683861808u64,
+    repayment_deadline: 1715484208u64,
+    interest_rate: 12u64,
+    _nonce: 4239955911483609910240185663307910395898636739411143371608254977456915125252group
+};
