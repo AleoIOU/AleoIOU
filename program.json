@@ -1,10 +1,10 @@
 {
-  "program": "iou.aleo",
+  "program": "iou_v2.aleo",
   "version": "0.0.0",
   "description": "",
   "development": {
-      "private_key": "APrivateKey1zkpG9Af9z5Ha4ejVyMCqVFXRKknSm8L1ELEwcc4htk9YhVK",
-      "address": "aleo1yzlta2q5h8t0fqe0v6dyh9mtv4aggd53fgzr068jvplqhvqsnvzq7pj2ke"
+      "private_key": "APrivateKey1zkpBg8aN5h7rsSUHNEGZetFpUn7dgoutZhorCS1veaiH4YZ",
+      "address": "aleo1z5eut5f5x7r45c8ut3xmt5wrsxdkpjrtksn5pu3d9af3zsr8ju8sm64tkz"
   },
   "license": "MIT"
 }

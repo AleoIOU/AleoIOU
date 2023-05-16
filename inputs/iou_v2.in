@@ -20,7 +20,7 @@ info: LoanInfo = LoanInfo {
 loan_application_record: Loan = Loan {
     owner: aleo1yzlta2q5h8t0fqe0v6dyh9mtv4aggd53fgzr068jvplqhvqsnvzq7pj2ke,
     gates: 0u64,
-    id: 4002334999435057716018293886734164192118302543847538865585644743278642038848field,
+    id: 8282291054585854206292249539454971804681574450953207439590166809479922165563field,
     state: 1u8,
     borrower: aleo1z5eut5f5x7r45c8ut3xmt5wrsxdkpjrtksn5pu3d9af3zsr8ju8sm64tkz,
     borrower_name: 999u64,
@@ -35,13 +35,13 @@ loan_application_record: Loan = Loan {
     date: 1683861808u64,
     repayment_deadline: 1715484208u64,
     interest_rate: 12u64,
-    _nonce: 2956179692819716213383696093312873031176261443728375747229162710373492428966group
+    _nonce: 3093144835424509659106019202414202020584927183213389790235876599431726640340group
 };
-coins_from_lender: Coins = Coins {
+mock_credits_from_lender: MockCredits = MockCredits {
     owner: aleo1yzlta2q5h8t0fqe0v6dyh9mtv4aggd53fgzr068jvplqhvqsnvzq7pj2ke,
     gates: 0u64,
-    amount: 13000u64,
-    _nonce: 1408751564391991676111205468865352502799969781804462237997238363743317919418group
+    microcredits: 13000u64,
+    _nonce: 7695355048296535522381370934946299252134185436041872107352522359591015059561group
 };
 signature_from_lender: u64 = 987654321u64;
 
@@ -49,7 +49,7 @@ signature_from_lender: u64 = 987654321u64;
 loan_application_record: Loan = Loan {
     owner: aleo1z5eut5f5x7r45c8ut3xmt5wrsxdkpjrtksn5pu3d9af3zsr8ju8sm64tkz,
     gates: 0u64,
-    id: 4002334999435057716018293886734164192118302543847538865585644743278642038848field,
+    id: 8282291054585854206292249539454971804681574450953207439590166809479922165563field,
     state: 1u8,
     borrower: aleo1z5eut5f5x7r45c8ut3xmt5wrsxdkpjrtksn5pu3d9af3zsr8ju8sm64tkz,
     borrower_name: 999u64,
@@ -64,12 +64,12 @@ loan_application_record: Loan = Loan {
     date: 1683861808u64,
     repayment_deadline: 1715484208u64,
     interest_rate: 12u64,
-    _nonce: 7909259062320386970432579667034466641592064529197587800510674429986259331998group
+    _nonce: 5897274220371955225899539609307340838187626456078205421482008037583928747477group
 };
 loan_disbursement_record: Loan = Loan {
     owner: aleo1z5eut5f5x7r45c8ut3xmt5wrsxdkpjrtksn5pu3d9af3zsr8ju8sm64tkz,
     gates: 0u64,
-    id: 4002334999435057716018293886734164192118302543847538865585644743278642038848field,
+    id: 8282291054585854206292249539454971804681574450953207439590166809479922165563field,
     state: 2u8,
     borrower: aleo1z5eut5f5x7r45c8ut3xmt5wrsxdkpjrtksn5pu3d9af3zsr8ju8sm64tkz,
     borrower_name: 999u64,
@@ -84,53 +84,11 @@ loan_disbursement_record: Loan = Loan {
     date: 1683861808u64,
     repayment_deadline: 1715484208u64,
     interest_rate: 12u64,
-    _nonce: 2030938041474446805374247521447934333419664472168441461288652028470088389773group
+    _nonce: 2034029146545055777914622648664872575477008215039334840322074835973619661762group
 };
-coins_from_borrower: Coins = Coins {
+mock_credits_from_borrower: MockCredits = MockCredits {
     owner: aleo1z5eut5f5x7r45c8ut3xmt5wrsxdkpjrtksn5pu3d9af3zsr8ju8sm64tkz,
     gates: 0u64,
-    amount: 14000u64,
-    _nonce: 5832986963494980000993845346631141207930768180463816185997814213106379380846group
-};
-
-[settle]
-loan_disbursement_record: Loan = Loan {
-    owner: aleo1yzlta2q5h8t0fqe0v6dyh9mtv4aggd53fgzr068jvplqhvqsnvzq7pj2ke,
-    gates: 0u64,
-    id: 4002334999435057716018293886734164192118302543847538865585644743278642038848field,
-    state: 2u8,
-    borrower: aleo1z5eut5f5x7r45c8ut3xmt5wrsxdkpjrtksn5pu3d9af3zsr8ju8sm64tkz,
-    borrower_name: 999u64,
-    borrower_address: 38535017702102u64,
-    borrower_signature: 123456789u64,
-    lender: aleo1yzlta2q5h8t0fqe0v6dyh9mtv4aggd53fgzr068jvplqhvqsnvzq7pj2ke,
-    lender_name: 666u64,
-    lender_address: 55456013737404u64,
-    lender_signature: 987654321u64,
-    amount: 12500u64,
-    currency: 1u64,
-    date: 1683861808u64,
-    repayment_deadline: 1715484208u64,
-    interest_rate: 12u64,
-    _nonce: 5760668708786861562513946771182321629655515211445769453011151409494698241997group
-};
-loan_repayment_record: Loan = Loan {
-    owner: aleo1yzlta2q5h8t0fqe0v6dyh9mtv4aggd53fgzr068jvplqhvqsnvzq7pj2ke,
-    gates: 0u64,
-    id: 4002334999435057716018293886734164192118302543847538865585644743278642038848field,
-    state: 3u8,
-    borrower: aleo1z5eut5f5x7r45c8ut3xmt5wrsxdkpjrtksn5pu3d9af3zsr8ju8sm64tkz,
-    borrower_name: 999u64,
-    borrower_address: 38535017702102u64,
-    borrower_signature: 123456789u64,
-    lender: aleo1yzlta2q5h8t0fqe0v6dyh9mtv4aggd53fgzr068jvplqhvqsnvzq7pj2ke,
-    lender_name: 666u64,
-    lender_address: 55456013737404u64,
-    lender_signature: 987654321u64,
-    amount: 12500u64,
-    currency: 1u64,
-    date: 1683861808u64,
-    repayment_deadline: 1715484208u64,
-    interest_rate: 12u64,
-    _nonce: 4239955911483609910240185663307910395898636739411143371608254977456915125252group
+    microcredits: 14000u64,
+    _nonce: 2616898538842399509564583889751199278183344263476641395584114554248167160185group
 };

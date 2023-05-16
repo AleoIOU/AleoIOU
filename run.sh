@@ -19,14 +19,26 @@ fi
 echo "
 ###############################################################################
 ########                                                               ########
-########             Borrower applies for loan from lender.            ########
+########    STEP 1: The borrower applies for a loan to the lender      ########
+########                                                               ########
+########       -------------------------------------------------       ########
+########       |   Transition   |     Apply                    |       ########
+########       |   State        |     Applied for loan         |       ########
+########       -------------------------------------------------       ########
+########       |   Input #1     |     Loan information         |       ########
+########       -------------------------------------------------       ########
+########       |   Output #1    |     Loan application record  |       ########
+########       |                |     for borrower             |       ########
+########       |   Output #2    |     Loan application record  |       ########
+########       |                |     for lender               |       ########
+########       -------------------------------------------------       ########
 ########                                                               ########
 ###############################################################################
 "
 
 # Swap in the private key and address of the borrower to program.json.
 echo "{
-  \"program\": \"iou.aleo\",
+  \"program\": \"iou_v2.aleo\",
   \"version\": \"0.0.0\",
   \"description\": \"\",
   \"development\": {
@@ -44,13 +56,35 @@ echo "{
 echo "
 ###############################################################################
 ########                                                               ########
-########               Lender disburses loan to borrower.              ########
+########    STEP 2: The lender disburses the loan to the borrower      ########
+########                                                               ########
+########       -------------------------------------------------       ########
+########       |   Transition   |     Disburse                 |       ########
+########       |   State        |     Applied for loan         |       ########
+########       |                |         ↓                    |       ########
+########       |                |     Loan disbursed           |       ########
+########       -------------------------------------------------       ########
+########       |   Input #1     |     Loan application record  |       ########
+########       |                |     for lender               |       ########
+########       |   Input #2     |     Credits from lender      |       ########
+########       |   Input #3     |     Lender's signature       |       ########
+########       -------------------------------------------------       ########
+########       |   Output #1    |     Loan disbursement record |       ########
+########       |                |     for borrower             |       ########
+########       |   Output #2    |     Credits to borrower      |       ########
+########       |                |     (Loan)                   |       ########
+########       |   Output #3    |     Loan disbursement record |       ########
+########       |                |     for lender               |       ########
+########       |   Output #4    |     Credits to lender        |       ########
+########       |                |     (Remain credits)         |       ########
+########       -------------------------------------------------       ########
 ########                                                               ########
 ###############################################################################
+
 "
 
 echo "{
-  \"program\": \"iou.aleo\",
+  \"program\": \"iou_v2.aleo\",
   \"version\": \"0.0.0\",
   \"description\": \"\",
   \"development\": {
@@ -68,13 +102,34 @@ echo "{
 echo "
 ###############################################################################
 ########                                                               ########
-########                Borrower repays loan to lender.                ########
+########    STEP 3: The borrower repays the loan to the lender         ########
 ########                                                               ########
+########       -------------------------------------------------       ########
+########       |   Transition   |     Repay                    |       ########
+########       |   State        |     Loan disbursed           |       ########
+########       |                |         ↓                    |       ########
+########       |                |     Loan repaid              |       ########
+########       -------------------------------------------------       ########
+########       |   Input #1     |     Loan application record  |       ########
+########       |                |     for borrower             |       ########
+########       |   Input #2     |     Loan disbursement record |       ########
+########       |                |     for borrower             |       ########
+########       |   Input #3     |     Credits from borrower    |       ########
+########       -------------------------------------------------       ########
+########       |   Output #1    |     Loan repayment record    |       ########
+########       |                |     for borrower             |       ########
+########       |   Output #2    |     Credits to borrower      |       ########
+########       |                |     (Remain credits)         |       ########
+########       |   Output #3    |     Loan repayment record    |       ########
+########       |                |     for lender               |       ########
+########       |   Output #4    |     Credits to lender        |       ########
+########       |                |     (Loan and interest)      |       ########
+########       -------------------------------------------------       ########
 ###############################################################################
 "
 
 echo "{
-  \"program\": \"iou.aleo\",
+  \"program\": \"iou_v2.aleo\",
   \"version\": \"0.0.0\",
   \"description\": \"\",
   \"development\": {
@@ -87,28 +142,4 @@ echo "{
 # Run the `repay` function
 (
     leo run repay || exit
-)
-
-echo "
-###############################################################################
-########                                                               ########
-########    The lender confirms the repayment and settles the loan.    ########
-########                                                               ########
-###############################################################################
-"
-
-echo "{
-  \"program\": \"iou.aleo\",
-  \"version\": \"0.0.0\",
-  \"description\": \"\",
-  \"development\": {
-      \"private_key\": \"APrivateKey1zkpG9Af9z5Ha4ejVyMCqVFXRKknSm8L1ELEwcc4htk9YhVK\",
-      \"address\": \"aleo1yzlta2q5h8t0fqe0v6dyh9mtv4aggd53fgzr068jvplqhvqsnvzq7pj2ke\"
-  },
-  \"license\": \"MIT\"
-}" > program.json
-
-# Run the `settle` function
-(
-    leo run settle || exit
 )
