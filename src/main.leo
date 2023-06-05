@@ -262,7 +262,7 @@ program iou_v3.aleo {
         owner: address,
         // Always zero.
         gates: u64,
-        // The ID of a loan, id := BHP256::hash(LoanInfo).
+        // The ID of a loan.
         id: field,
         // Using numbers to represent the state of a loan:
         // 1. Number 1 represents “Applied for loan”
@@ -311,6 +311,9 @@ program iou_v3.aleo {
     ) {
         // Authenticate borrower.
         assert_eq(self.caller, info.borrower);
+
+        assert(info.interest_rate >= 2u64);
+        assert(info.amount >= 25000u64);
 
         // Set the loan state to “Applied for loan”.
         let state: u8 = 1u8;
@@ -654,7 +657,7 @@ program iou_v3.aleo {
         let loan_disbursement_record_for_borrower: Loan = Loan {
             owner: loan_application_record.borrower,
             gates: 0u64,
-            id: loan_application_record.id,
+            id: id,
             state: new_state,
             borrower: loan_application_record.borrower,
             borrower_name: loan_application_record.borrower_name,
@@ -683,7 +686,7 @@ program iou_v3.aleo {
         let lender_sig_part_one_for_borrower: SigPartOne = SigPartOne {
             owner: loan_application_record.borrower,
             gates: 0u64,
-            loan_id: loan_application_record.id,
+            loan_id: id,
             the_undersigned: loan_application_record.lender,
             sig_01: sig_info_part_one.sig_01,
             sig_02: sig_info_part_one.sig_02,
@@ -719,7 +722,7 @@ program iou_v3.aleo {
         let lender_sig_part_two_for_borrower: SigPartTwo = SigPartTwo {
             owner: loan_application_record.borrower,
             gates: 0u64,
-            loan_id: loan_application_record.id,
+            loan_id: id,
             the_undersigned: loan_application_record.lender,
             sig_01: sig_info_part_two.sig_01,
             sig_02: sig_info_part_two.sig_02,
@@ -755,7 +758,7 @@ program iou_v3.aleo {
         let lender_sig_part_three_for_borrower: SigPartThree = SigPartThree {
             owner: loan_application_record.borrower,
             gates: 0u64,
-            loan_id: loan_application_record.id,
+            loan_id: id,
             the_undersigned: loan_application_record.lender,
             sig_length: sig_info_part_three.sig_length,
             sig_01: sig_info_part_three.sig_01,
@@ -791,7 +794,7 @@ program iou_v3.aleo {
         let loan_disbursement_record_for_lender: Loan = Loan {
             owner: loan_application_record.lender,
             gates: 0u64,
-            id: loan_application_record.id,
+            id: id,
             state: new_state,
             borrower: loan_application_record.borrower,
             borrower_name: loan_application_record.borrower_name,
@@ -820,7 +823,7 @@ program iou_v3.aleo {
         let lender_sig_part_one_for_lender: SigPartOne = SigPartOne {
             owner: loan_application_record.lender,
             gates: 0u64,
-            loan_id: loan_application_record.id,
+            loan_id: id,
             the_undersigned: loan_application_record.lender,
             sig_01: sig_info_part_one.sig_01,
             sig_02: sig_info_part_one.sig_02,
@@ -856,7 +859,7 @@ program iou_v3.aleo {
         let lender_sig_part_two_for_lender: SigPartTwo = SigPartTwo {
             owner: loan_application_record.lender,
             gates: 0u64,
-            loan_id: loan_application_record.id,
+            loan_id: id,
             the_undersigned: loan_application_record.lender,
             sig_01: sig_info_part_two.sig_01,
             sig_02: sig_info_part_two.sig_02,
@@ -892,7 +895,7 @@ program iou_v3.aleo {
         let lender_sig_part_three_for_lender: SigPartThree = SigPartThree {
             owner: loan_application_record.lender,
             gates: 0u64,
-            loan_id: loan_application_record.id,
+            loan_id: id,
             the_undersigned: loan_application_record.lender,
             sig_length: sig_info_part_three.sig_length,
             sig_01: sig_info_part_three.sig_01,
@@ -946,6 +949,7 @@ program iou_v3.aleo {
     transition repay(
         loan_application_record: Loan,
         loan_disbursement_record: Loan,
+        current_date: u64,
         mock_credits_from_borrower: MockCredits
     ) -> (Loan, MockCredits, Loan, MockCredits) {
         // Check if the loan ID is the same.
@@ -959,8 +963,16 @@ program iou_v3.aleo {
         let new_state: u8 = 3u8;
 
         // Check if the amount of credits meets the amount of principal plus interest.
-        let interest_amount: u64 = loan_disbursement_record.amount / 100u64 * loan_disbursement_record.interest_rate;
-        let principal_plus_interest_amount: u64 = loan_disbursement_record.amount + interest_amount;
+        let start_date: u64 = loan_disbursement_record.date;
+        assert(current_date >= start_date);
+
+        let interest_rate: u64 = loan_disbursement_record.interest_rate;
+        let principal_amount: u64 = loan_disbursement_record.amount;
+
+        let days: u64 = elapsed_days(current_date, start_date);
+        let interest_amount: u64 = days * interest_rate * principal_amount * 1000u64 / 365u64 / 100000u64;
+
+        let principal_plus_interest_amount: u64 = principal_amount + interest_amount;
         let remain_mock_credits_amount: u64 = mock_credits_from_borrower.microcredits - principal_plus_interest_amount;
         assert(remain_mock_credits_amount >= 0u64);
 
@@ -978,9 +990,9 @@ program iou_v3.aleo {
 
         // Create loan repayment record for the borrower to prove that the borrower has repaid the loan.
         let loan_repayment_record_for_borrower: Loan = Loan {
-            owner: loan_disbursement_record.lender,
+            owner: loan_disbursement_record.borrower,
             gates: 0u64,
-            id: loan_disbursement_record.id,
+            id: id,
             state: new_state,
             borrower: loan_disbursement_record.borrower,
             borrower_name: loan_disbursement_record.borrower_name,
@@ -1009,7 +1021,7 @@ program iou_v3.aleo {
         let loan_repayment_record_for_lender: Loan = Loan {
             owner: loan_disbursement_record.lender,
             gates: 0u64,
-            id: loan_disbursement_record.id,
+            id: id,
             state: new_state,
             borrower: loan_disbursement_record.borrower,
             borrower_name: loan_disbursement_record.borrower_name,
@@ -1048,5 +1060,11 @@ program iou_v3.aleo {
         assert_eq(loan_state, 2u8);
         // Set the loan state to “Loan repaid”.
         Mapping::set(loan_states, id, new_state);
+    }
+
+    inline elapsed_days(current_date: u64, loan_start_date: u64) -> u64 {
+        let one_day: u64 = 24u64 * 60u64 * 60u64;
+        let elapsed_time: u64 = current_date - loan_start_date;
+        return elapsed_time / one_day + (elapsed_time % one_day > 0u64 ? 1u64 : 0u64);
     }
 }

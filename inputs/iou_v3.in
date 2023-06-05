@@ -17,7 +17,7 @@ info: LoanInfo = LoanInfo {
     lender_addr_02: 3093571423580702372788833944294749345500620965field,
     lender_addr_03: 1field,
     lender_addr_length: 81u64,
-    amount: 12500u64,
+    amount: 125000u64,
     currency: 1u64,
     date: 1683861808u64,
     repayment_deadline: 1715484208u64,
@@ -87,6 +87,7 @@ sig_info_part_two: SigInfoPartTwo = SigInfoPartTwo {
 };
 
 sig_info_part_three: SigInfoPartThree = SigInfoPartThree {
+    sig_length: 20u64,
     sig_01: 386003141192214047518460344115027063872248462510251342495948189002184008204field,
     sig_02: 28228710200802325553248658834129540512984774797146041295601584165269363437field,
     sig_03: 34939210930687842063292571926496382834634332991504265697099819168119935032field,
@@ -113,8 +114,7 @@ sig_info_part_three: SigInfoPartThree = SigInfoPartThree {
     sig_24: 0field,
     sig_25: 0field,
     sig_26: 0field,
-    sig_27: 0field,
-    sig_length: 20u64
+    sig_27: 0field
 };
 
 [disburse]
@@ -139,19 +139,19 @@ loan_application_record: Loan = Loan {
     lender_addr_02: 3093571423580702372788833944294749345500620965field,
     lender_addr_03: 1field,
     lender_addr_length: 81u64,
-    amount: 12500u64,
+    amount: 125000u64,
     currency: 1u64,
     date: 1683861808u64,
     repayment_deadline: 1715484208u64,
     interest_rate: 12u64,
-    _nonce: 4577237989854806640483764084470618180138325487587851266718637907691026357148group
+    _nonce: 6063697539207283938038157862561289379161569183140504047735431392728078141470group
 };
 
 mock_credits_from_lender: MockCredits = MockCredits {
     owner: aleo1yzlta2q5h8t0fqe0v6dyh9mtv4aggd53fgzr068jvplqhvqsnvzq7pj2ke,
     gates: 0u64,
-    microcredits: 13000u64,
-    _nonce: 2687483503413718905952207851580374303169734845579182745915175703601622857109group
+    microcredits: 130000u64,
+    _nonce: 3532514995298821982638131280519504438856322508371972627723387894007427612540group
 };
 
 sig_info_part_one: SigInfoPartOne = SigInfoPartOne {
@@ -217,6 +217,7 @@ sig_info_part_two: SigInfoPartTwo = SigInfoPartTwo {
 };
 
 sig_info_part_three: SigInfoPartThree = SigInfoPartThree {
+    sig_length: 20u64,
     sig_01: 186003141192214047518460344115027063872248462510251342495948189002184008204field,
     sig_02: 18228710200802325553248658834129540512984774797146041295601584165269363437field,
     sig_03: 14939210930687842063292571926496382834634332991504265697099819168119935032field,
@@ -243,8 +244,7 @@ sig_info_part_three: SigInfoPartThree = SigInfoPartThree {
     sig_24: 0field,
     sig_25: 0field,
     sig_26: 0field,
-    sig_27: 0field,
-    sig_length: 20u64
+    sig_27: 0field
 };
 
 [repay]
@@ -269,12 +269,12 @@ loan_application_record: Loan = Loan {
     lender_addr_02: 3093571423580702372788833944294749345500620965field,
     lender_addr_03: 1field,
     lender_addr_length: 81u64,
-    amount: 12500u64,
+    amount: 125000u64,
     currency: 1u64,
     date: 1683861808u64,
     repayment_deadline: 1715484208u64,
     interest_rate: 12u64,
-    _nonce: 915640864198500201777299385867648419362426485116023342746462838554828701350group
+    _nonce: 6578748770066902510756802187137128858764699498741325760330867049233774354749group
 };
 
 loan_disbursement_record: Loan = Loan {
@@ -298,17 +298,19 @@ loan_disbursement_record: Loan = Loan {
     lender_addr_02: 3093571423580702372788833944294749345500620965field,
     lender_addr_03: 1field,
     lender_addr_length: 81u64,
-    amount: 12500u64,
+    amount: 125000u64,
     currency: 1u64,
     date: 1683861808u64,
     repayment_deadline: 1715484208u64,
     interest_rate: 12u64,
-    _nonce: 3130954945953050171074304181994876195217280901827712722442862987038335998290group
+    _nonce: 2300593605836213156645896599524641301541051452297245742223704297895523967400group 
 };
+
+current_date: u64 = 1715397807u64;
 
 mock_credits_from_borrower: MockCredits = MockCredits {
     owner: aleo1z5eut5f5x7r45c8ut3xmt5wrsxdkpjrtksn5pu3d9af3zsr8ju8sm64tkz,
     gates: 0u64,
-    microcredits: 14000u64,
-    _nonce: 4378621766961083330657463499835170256123603538154278930482435297912922859030group
+    microcredits: 140000u64,
+    _nonce: 6128293806353991525128877946542506385115489866328121560722702821572464731977group
 };
