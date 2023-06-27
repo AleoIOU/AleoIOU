@@ -605,7 +605,7 @@ program iou_v3.aleo {
     }
     // Create a new loan state in the "loan_states" mapping.
     finalize apply(id: field, state: u8, amount: u64) {
-        let loan_state: u8 = Mapping::get_or_init(loan_states, id, 0u8);
+        let loan_state: u8 = Mapping::get_or_use(loan_states, id, 0u8);
         // If the contract already exists, roll back the transaction to avoid overwriting
         // the existing loan state.
         assert_eq(loan_state, 0u8);
