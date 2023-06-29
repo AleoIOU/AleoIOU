@@ -26,26 +26,11 @@ echo "
 ########       |   State        |     Applied for loan               |       ########
 ########       -------------------------------------------------------       ########
 ########       |   Input  #1    |     Loan information               |       ########
-########       |   Input  #2    |     Borrower's signature #1        |       ########
-########       |   Input  #3    |     Borrower's signature #2        |       ########
-########       |   Input  #4    |     Borrower's signature #3        |       ########
 ########       -------------------------------------------------------       ########
 ########       |   Output #1    |     Loan application record        |       ########
 ########       |                |     (owner: borrower)              |       ########
-########       |   Output #2    |     Borrower's signature record #1 |       ########
-########       |                |     (owner: borrower)              |       ########
-########       |   Output #3    |     Borrower's signature record #2 |       ########
-########       |                |     (owner: borrower)              |       ########
-########       |   Output #4    |     Borrower's signature record #3 |       ########
-########       |                |     (owner: borrower)              |       ########
 ########       |                |                                    |       ########
-########       |   Output #5    |     Loan application record        |       ########
-########       |                |     (owner: lender  )              |       ########
-########       |   Output #6    |     Borrower's signature record #1 |       ########
-########       |                |     (owner: lender  )              |       ########
-########       |   Output #7    |     Borrower's signature record #2 |       ########
-########       |                |     (owner: lender  )              |       ########
-########       |   Output #8    |     Borrower's signature record #3 |       ########
+########       |   Output #2    |     Loan application record        |       ########
 ########       |                |     (owner: lender  )              |       ########
 ########       -------------------------------------------------------       ########
 ########                                                                     ########
@@ -54,7 +39,7 @@ echo "
 
 # Swap in the private key and address of the borrower to program.json.
 echo "{
-  \"program\": \"iou_v3.aleo\",
+  \"program\": \"aleo_iou_v1.aleo\",
   \"version\": \"0.0.0\",
   \"description\": \"\",
   \"development\": {
@@ -84,30 +69,17 @@ echo "
 ########       |                |     (owner: lender  )              |       ########
 ########       |   Input  #2    |     Lender's credits record        |       ########
 ########       |                |     (owner: lender  )              |       ########
-########       |   Input  #3    |     Lender's signature #1          |       ########
-########       |   Input  #4    |     Lender's signature #2          |       ########
-########       |   Input  #5    |     Lender's signature #3          |       ########
+########       |   Input  #3    |     Start block height             |       ########
+########       |   Input  #4    |     Lender's signature             |       ########
 ########       -------------------------------------------------------       ########
 ########       |   Output #1    |     Loan disbursement record       |       ########
 ########       |                |     (owner: borrower)              |       ########
-########       |   Output #2    |     Loan                           |       ########
-########       |                |     (owner: borrower)              |       ########
-########       |   Output #3    |     Lender's signature record #1   |       ########
-########       |                |     (owner: borrower)              |       ########
-########       |   Output #4    |     Lender's signature record #2   |       ########
-########       |                |     (owner: borrower)              |       ########
-########       |   Output #5    |     Lender's signature record #3   |       ########
+########       |   Output #2    |     Loan credits                   |       ########
 ########       |                |     (owner: borrower)              |       ########
 ########       |                |                                    |       ########
-########       |   Output #6    |     Loan disbursement record       |       ########
+########       |   Output #3    |     Loan disbursement record       |       ########
 ########       |                |     (owner: lender)                |       ########
-########       |   Output #7    |     Remaining credits              |       ########
-########       |                |     (owner: lender)                |       ########
-########       |   Output #8    |     Lender's signature record #1   |       ########
-########       |                |     (owner: lender)                |       ########
-########       |   Output #9    |     Lender's signature record #2   |       ########
-########       |                |     (owner: lender)                |       ########
-########       |   Output #10   |     Lender's signature record #3   |       ########
+########       |   Output #4    |     Remaining credits              |       ########
 ########       |                |     (owner: lender)                |       ########
 ########       -------------------------------------------------------       ########
 ########                                                                     ########
@@ -116,7 +88,7 @@ echo "
 "
 
 echo "{
-  \"program\": \"iou_v3.aleo\",
+  \"program\": \"aleo_iou_v1.aleo\",
   \"version\": \"0.0.0\",
   \"description\": \"\",
   \"development\": {
@@ -148,6 +120,7 @@ echo "
 ########       |                |     (owner: borrower)              |       ########
 ########       |   Input  #3    |     Borrower's credits record      |       ########
 ########       |                |     (owner: borrower)              |       ########
+########       |   Input  #4    |     End block height               |       ########
 ########       -------------------------------------------------------       ########
 ########       |   Output #1    |     Loan repayment record          |       ########
 ########       |                |     (owner: borrower)              |       ########
@@ -156,14 +129,14 @@ echo "
 ########       |                |                                    |       ########
 ########       |   Output #3    |     Loan repayment record          |       ########
 ########       |                |     (owner: lender)                |       ########
-########       |   Output #4    |     Repayment                      |       ########
+########       |   Output #4    |     Repayment credits              |       ########
 ########       |                |     (owner: lender)                |       ########
 ########       -------------------------------------------------------       ########
 #####################################################################################
 "
 
 echo "{
-  \"program\": \"iou_v3.aleo\",
+  \"program\": \"aleo_iou_v1.aleo\",
   \"version\": \"0.0.0\",
   \"description\": \"\",
   \"development\": {
