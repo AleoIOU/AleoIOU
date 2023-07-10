@@ -1,7 +1,7 @@
 import mockcredits.leo;
 
 // The 'iou' program.
-program aleo_iou_v1.aleo {
+program aleo_iou_v2.aleo {
 
     struct LoanInfo {
         // The loan ID.

@@ -39,7 +39,7 @@ echo "
 
 # Swap in the private key and address of the borrower to program.json.
 echo "{
-  \"program\": \"aleo_iou_v1.aleo\",
+  \"program\": \"aleo_iou_v2.aleo\",
   \"version\": \"0.0.0\",
   \"description\": \"\",
   \"development\": {
@@ -69,8 +69,6 @@ echo "
 ########       |                |     (owner: lender  )              |       ########
 ########       |   Input  #2    |     Lender's credits record        |       ########
 ########       |                |     (owner: lender  )              |       ########
-########       |   Input  #3    |     Start block height             |       ########
-########       |   Input  #4    |     Lender's signature             |       ########
 ########       -------------------------------------------------------       ########
 ########       |   Output #1    |     Loan disbursement record       |       ########
 ########       |                |     (owner: borrower)              |       ########
@@ -88,7 +86,7 @@ echo "
 "
 
 echo "{
-  \"program\": \"aleo_iou_v1.aleo\",
+  \"program\": \"aleo_iou_v2.aleo\",
   \"version\": \"0.0.0\",
   \"description\": \"\",
   \"development\": {
@@ -120,7 +118,8 @@ echo "
 ########       |                |     (owner: borrower)              |       ########
 ########       |   Input  #3    |     Borrower's credits record      |       ########
 ########       |                |     (owner: borrower)              |       ########
-########       |   Input  #4    |     End block height               |       ########
+########       |   Input  #4    |     Start block height             |       ########
+########       |   Input  #5    |     End block height               |       ########
 ########       -------------------------------------------------------       ########
 ########       |   Output #1    |     Loan repayment record          |       ########
 ########       |                |     (owner: borrower)              |       ########
@@ -136,7 +135,7 @@ echo "
 "
 
 echo "{
-  \"program\": \"aleo_iou_v1.aleo\",
+  \"program\": \"aleo_iou_v2.aleo\",
   \"version\": \"0.0.0\",
   \"description\": \"\",
   \"development\": {
