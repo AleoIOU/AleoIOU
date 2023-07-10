@@ -10,14 +10,18 @@ program aleo_iou_v1.aleo {
         borrower: address,
         // The borrower's name.
         borrower_name: field,
+        borrower_name_len: u32,
         // The borrower's address.
-        borrower_address: field,
-        // The borrower's signature.
-        borrower_signature: field,
+        borrower_addr_01: field,
+        borrower_addr_02: field,
+        borrower_addr_len: u32,
         // The address of the lender's account.
         lender: address,
         lender_name: field,
-        lender_address: field,
+        lender_name_len: u32,
+        lender_addr_01: field,
+        lender_addr_02: field,
+        lender_addr_len: u32,
         // The amount of a loan.
         amount: u64,
         // The repayment deadline of a loan.
@@ -35,11 +39,16 @@ program aleo_iou_v1.aleo {
         id: field,
         borrower: address,
         borrower_name: field,
-        borrower_address: field,
-        borrower_signature: field,
+        borrower_name_len: u32,
+        borrower_addr_01: field,
+        borrower_addr_02: field,
+        borrower_addr_len: u32,
         lender: address,
         lender_name: field,
-        lender_address: field,
+        lender_name_len: u32,
+        lender_addr_01: field,
+        lender_addr_02: field,
+        lender_addr_len: u32,
         amount: u64,
         repayment_deadline: u64,
         interest_rate: u64
@@ -51,9 +60,7 @@ program aleo_iou_v1.aleo {
         // Always zero.
         gates: u64,
         // The ID of a loan.
-        id: field,
-        lender_signature: field,
-        start_block_height: field
+        id: field
     }
 
     // A loan repayment record.
@@ -74,6 +81,7 @@ program aleo_iou_v1.aleo {
     mapping loan_states: field => u8;
     // Save loan amounts in public storage.
     mapping loan_amounts: field => u64;
+    mapping loan_start_heights: field => u32;
 
     // Apply a loan.
     transition apply(info: LoanInfo) -> (Application, Application) {
@@ -93,11 +101,16 @@ program aleo_iou_v1.aleo {
             id: info.id,
             borrower: info.borrower,
             borrower_name: info.borrower_name,
-            borrower_address: info.borrower_address,
-            borrower_signature: info.borrower_signature,
+            borrower_name_len: info.borrower_name_len,
+            borrower_addr_01: info.borrower_addr_01,
+            borrower_addr_02: info.borrower_addr_02,
+            borrower_addr_len: info.borrower_addr_len,
             lender: info.lender,
             lender_name: info.lender_name,
-            lender_address: info.lender_address,
+            lender_name_len: info.lender_name_len,
+            lender_addr_01: info.lender_addr_01,
+            lender_addr_02: info.lender_addr_02,
+            lender_addr_len: info.lender_addr_len,
             amount: info.amount,
             repayment_deadline: info.repayment_deadline,
             interest_rate: info.interest_rate
@@ -110,11 +123,16 @@ program aleo_iou_v1.aleo {
             id: info.id,
             borrower: info.borrower,
             borrower_name: info.borrower_name,
-            borrower_address: info.borrower_address,
-            borrower_signature: info.borrower_signature,
+            borrower_name_len: info.borrower_name_len,
+            borrower_addr_01: info.borrower_addr_01,
+            borrower_addr_02: info.borrower_addr_02,
+            borrower_addr_len: info.borrower_addr_len,
             lender: info.lender,
             lender_name: info.lender_name,
-            lender_address: info.lender_address,
+            lender_name_len: info.lender_name_len,
+            lender_addr_01: info.lender_addr_01,
+            lender_addr_02: info.lender_addr_02,
+            lender_addr_len: info.lender_addr_len,
             amount: info.amount,
             repayment_deadline: info.repayment_deadline,
             interest_rate: info.interest_rate
@@ -142,8 +160,6 @@ program aleo_iou_v1.aleo {
     transition disburse(
         loan_application_record: Application,
         credits_from_lender: mockcredits.leo/mockcredits.record,
-        start_block_height: field,
-        signature_from_lender: field,
     ) -> (
         Disbursement,
         mockcredits.leo/mockcredits.record, // transferred_credits
@@ -157,8 +173,6 @@ program aleo_iou_v1.aleo {
         // Set the loan state to "Loan disbursed".
         let new_state: u8 = 2u8;
 
-        let start_block_height_u32: u32 = start_block_height as u32;
-
         // The lender disburses the loan to the borrower.
         let (remaining_credits, transferred_credits): (mockcredits, mockcredits) = mockcredits.leo/transfer_private(
             credits_from_lender,
@@ -170,18 +184,14 @@ program aleo_iou_v1.aleo {
         let loan_disbursement_record_for_borrower: Disbursement = Disbursement {
             owner: loan_application_record.borrower,
             gates: 0u64,
-            id,
-            lender_signature: signature_from_lender,
-            start_block_height
+            id
         };
 
         // Create loan disbursement record for the lender to prove that the lender has disbursed the loan.
         let loan_disbursement_record_for_lender: Disbursement = Disbursement {
             owner: loan_application_record.lender,
             gates: 0u64,
-            id: id,
-            lender_signature: signature_from_lender,
-            start_block_height
+            id
         };
 
         return (
@@ -189,19 +199,19 @@ program aleo_iou_v1.aleo {
             transferred_credits,
             loan_disbursement_record_for_lender,
             remaining_credits,
-        ) then finalize(id, new_state, start_block_height_u32);
+        ) then finalize(id, new_state);
     }
     // Update the state of the loan.
-    finalize disburse(id: field, new_state: u8, start_block_height: u32) {
+    finalize disburse(id: field, new_state: u8) {
         // If the current loan state is not "Applied for loan", roll back the transaction.
         let loan_state: u8 = Mapping::get(loan_states, id);
         assert_eq(loan_state, 1u8);
 
-        // If the start block height is less than current block height, roll back the transaction.
-        assert(start_block_height >= block.height);
-
         // Set the loan state to "Loan disbursed".
         Mapping::set(loan_states, id, new_state);
+
+        // Save the loan start height.
+        Mapping::set(loan_start_heights, id, block.height);
     }
 
     // Repay a loan.
@@ -209,6 +219,7 @@ program aleo_iou_v1.aleo {
         loan_application_record: Application,
         loan_disbursement_record: Disbursement,
         credits_from_borrower: mockcredits.leo/mockcredits.record,
+        start_block_height: field,
         end_block_height: field
     ) -> (
         Repayment,
@@ -224,7 +235,6 @@ program aleo_iou_v1.aleo {
         let new_state: u8 = 3u8;
 
         // Check if the amount of credits meets the amount of principal plus interest.
-        let start_block_height: field = loan_disbursement_record.start_block_height;
         let start_block_height_u64: u64 = start_block_height as u64;
         let end_block_height_u64: u64 = end_block_height as u64;
         let end_block_height_u32: u32 = end_block_height as u32;
