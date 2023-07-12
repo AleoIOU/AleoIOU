@@ -39,7 +39,7 @@ echo "
 
 # Swap in the private key and address of the borrower to program.json.
 echo "{
-  \"program\": \"aleo_iou_v2.aleo\",
+  \"program\": \"aleo_iou_v2_2.aleo\",
   \"version\": \"0.0.0\",
   \"description\": \"\",
   \"development\": {
@@ -86,7 +86,7 @@ echo "
 "
 
 echo "{
-  \"program\": \"aleo_iou_v2.aleo\",
+  \"program\": \"aleo_iou_v2_2.aleo\",
   \"version\": \"0.0.0\",
   \"description\": \"\",
   \"development\": {
@@ -135,7 +135,7 @@ echo "
 "
 
 echo "{
-  \"program\": \"aleo_iou_v2.aleo\",
+  \"program\": \"aleo_iou_v2_2.aleo\",
   \"version\": \"0.0.0\",
   \"description\": \"\",
   \"development\": {

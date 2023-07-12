@@ -1,7 +1,7 @@
 import mockcredits.leo;
 
 // The 'iou' program.
-program aleo_iou_v2.aleo {
+program aleo_iou_v2_2.aleo {
 
     struct LoanInfo {
         // The loan ID.
@@ -37,6 +37,7 @@ program aleo_iou_v2.aleo {
         gates: u64,
         // The ID of a loan.
         id: field,
+        state: u8,
         borrower: address,
         borrower_name: field,
         borrower_name_len: u32,
@@ -60,7 +61,8 @@ program aleo_iou_v2.aleo {
         // Always zero.
         gates: u64,
         // The ID of a loan.
-        id: field
+        id: field,
+        state: u8
     }
 
     // A loan repayment record.
@@ -70,6 +72,8 @@ program aleo_iou_v2.aleo {
         gates: u64,
         // The ID of a loan.
         id: field,
+        state: u8,
+        start_block_height: field,
         end_block_height: field,
     }
 
@@ -85,8 +89,11 @@ program aleo_iou_v2.aleo {
 
     // Apply a loan.
     transition apply(info: LoanInfo) -> (Application, Application) {
-        // Authenticate borrower.
+        // The caller must be the borrower.
         assert_eq(self.caller, info.borrower);
+
+        // The borrower must not be the lender.
+        assert(info.borrower != info.lender);
 
         assert(info.interest_rate >= 2u64);
         assert(info.amount >= 25000u64);
@@ -99,6 +106,7 @@ program aleo_iou_v2.aleo {
             owner: info.lender,
             gates: 0u64,
             id: info.id,
+            state,
             borrower: info.borrower,
             borrower_name: info.borrower_name,
             borrower_name_len: info.borrower_name_len,
@@ -121,6 +129,7 @@ program aleo_iou_v2.aleo {
             owner: info.borrower,
             gates: 0u64,
             id: info.id,
+            state,
             borrower: info.borrower,
             borrower_name: info.borrower_name,
             borrower_name_len: info.borrower_name_len,
@@ -166,6 +175,9 @@ program aleo_iou_v2.aleo {
         Disbursement,
         mockcredits.leo/mockcredits.record, // remaining_credits
     ) {
+        // The caller must be the lender.
+        assert_eq(self.caller, loan_application_record.lender);
+
         // Check if the amount of credits meets the loan amount.
         assert(credits_from_lender.microcredits >= loan_application_record.amount);
 
@@ -184,14 +196,16 @@ program aleo_iou_v2.aleo {
         let loan_disbursement_record_for_borrower: Disbursement = Disbursement {
             owner: loan_application_record.borrower,
             gates: 0u64,
-            id
+            id,
+            state: new_state
         };
 
         // Create loan disbursement record for the lender to prove that the lender has disbursed the loan.
         let loan_disbursement_record_for_lender: Disbursement = Disbursement {
             owner: loan_application_record.lender,
             gates: 0u64,
-            id
+            id,
+            state: new_state
         };
 
         return (
@@ -227,6 +241,9 @@ program aleo_iou_v2.aleo {
         Repayment,
         mockcredits.leo/mockcredits.record, // transferred_credits
     ) {
+        // The caller must be the borrower.
+        assert_eq(self.caller, loan_application_record.borrower);
+
         // Check if the loan ID is the same.
         assert_eq(loan_application_record.id, loan_disbursement_record.id);
 
@@ -236,6 +253,7 @@ program aleo_iou_v2.aleo {
 
         // Check if the amount of credits meets the amount of principal plus interest.
         let start_block_height_u64: u64 = start_block_height as u64;
+        let start_block_height_u32: u32 = start_block_height as u32;
         let end_block_height_u64: u64 = end_block_height as u64;
         let end_block_height_u32: u32 = end_block_height as u32;
         assert(end_block_height_u64 >= start_block_height_u64);
@@ -262,6 +280,8 @@ program aleo_iou_v2.aleo {
             owner: loan_application_record.borrower,
             gates: 0u64,
             id,
+            state: new_state,
+            start_block_height,
             end_block_height
         };
 
@@ -270,6 +290,8 @@ program aleo_iou_v2.aleo {
             owner: loan_application_record.lender,
             gates: 0u64,
             id,
+            state: new_state,
+            start_block_height,
             end_block_height
         };
 
@@ -278,13 +300,16 @@ program aleo_iou_v2.aleo {
             remaining_credits,
             loan_repayment_record_for_lender,
             transferred_credits,
-        ) then finalize(id, new_state, end_block_height_u32);
+        ) then finalize(id, new_state, start_block_height_u32, end_block_height_u32);
     }
     // Update the state of the loan.
-    finalize repay(id: field, new_state: u8, end_block_height: u32) {
+    finalize repay(id: field, new_state: u8, start_block_height: u32, end_block_height: u32) {
         // If the current loan state is not "Loan disbursed", roll back the transaction.
         let loan_state: u8 = Mapping::get(loan_states, id);
         assert_eq(loan_state, 2u8);
+
+        // If the start block height is not equal to the height stored in the mapping, roll back the transaction.
+        assert(start_block_height == Mapping::get(loan_start_heights, id));
 
         // If the end block height is less than current block height, roll back the transaction.
         assert(end_block_height >= block.height);
